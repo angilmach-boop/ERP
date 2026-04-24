@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard">
+  <div class="cards">
+    <div class="card">
+      <div class="icon"><i class="fa-solid fa-boxes"></i></div>
+      <div>
+        <h3>Total Items</h3>
+        <p>{{ total_items }}</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fa-solid fa-sack-dollar"></i></div>
+      <div>
+        <h3>Inventory Value</h3>
+        <p>{{ '%.2f'|format(total_value) }}</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <div>
+        <h3>Low Stock</h3>
+        <p>{{ low_stock }}</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fa-solid fa-clock"></i></div>
+      <div>
+        <h3>Transactions Today</h3>
+        <p>{{ transactions_today }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="charts">
+    <div class="chart-card"><canvas id="pieChart"></canvas></div>
+    <div class="chart-card"><canvas id="lineChart"></canvas></div>
+    <div class="chart-card"><canvas id="barChart"></canvas></div>
+  </div>
+</div>
+<script>
+  window.ERP_CHART_DATA = {
+    categories: {{ category_labels|tojson }},
+    categoryValues: {{ category_values|tojson }},
+    stockTrend: {{ stock_trend|tojson }}
+  };
+</script>
+{% endblock %}

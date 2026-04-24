@@ -1,0 +1,24 @@
+:root{--pink:#ff6b9a;--muted:#6b7280}
+body{font-family: 'Segoe UI', Arial, sans-serif;color:#222;margin:0;background:#fff}
+.invoice-wrap{max-width:900px;margin:20px auto;padding:22px;border:1px solid #f1e6ea;border-radius:10px}
+.invoice-actions{display:flex;gap:10px;justify-content:flex-end;margin-bottom:12px}
+.invoice-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #fdeaf1;padding-bottom:12px}
+.invoice-header .company h1{margin:0;color:var(--pink)}
+.invoice-header .muted{color:var(--muted);font-size:13px}
+.invoice-meta h2{margin:0}
+.bill-to{display:flex;justify-content:space-between;padding:18px 0}
+.bill-to h3{margin:0 0 6px 0}
+.items table{width:100%;border-collapse:collapse}
+.items th{background:#fff5f8;text-align:left;padding:10px;border-bottom:1px solid #fdeaf1}
+.items td{padding:10px;border-bottom:1px solid #fbedf2}
+.items tfoot td{padding:10px;font-weight:700}
+.total{font-size:22px;color:var(--pink);font-weight:700}
+.invoice-footer{padding-top:16px;border-top:1px solid #fdeaf1}
+.btn{display:inline-block;padding:8px 12px;border-radius:8px;border:1px solid #e8d7df;background:white;color:var(--pink);text-decoration:none}
+.btn.primary{background:var(--pink);color:white;border:none}
+
+@media print{
+  body{background:#fff}
+  .invoice-wrap{border:none;margin:0;padding:0}
+  .no-print{display:none}
+}

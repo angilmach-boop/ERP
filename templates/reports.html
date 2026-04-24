@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+<h2>Transaction History</h2>
+<table class="table">
+  <thead>
+    <tr><th>ID</th><th>Item</th><th>Type</th><th>Quantity</th><th>Date</th></tr>
+  </thead>
+  <tbody>
+    {% for t in transactions %}
+      <tr>
+        <td>{{ t['id'] }}</td>
+        <td>{{ t['item_name'] }}</td>
+        <td>{{ t['type'] }}</td>
+        <td>{{ t['quantity'] }}</td>
+        <td>{{ t['date'] }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

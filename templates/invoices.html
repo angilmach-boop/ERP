@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Invoices{% endblock %}
+{% block content %}
+<h2>Invoices</h2>
+<table class="table">
+  <thead><tr><th>ID</th><th>Sales</th><th>Amount</th><th>Status</th><th>Issued</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for i in invoices %}
+      <tr>
+        <td>{{ i['id'] }}</td>
+        <td>{{ i['customer_name'] }}</td>
+        <td>{{ '%.2f'|format(i['amount'] or 0) }}</td>
+        <td>{{ i['status'] }}</td>
+        <td>{{ i['issued_at'] }}</td>
+        <td>
+          <a class="btn" href="{{ url_for('app.invoice_print', inv_id=i['id']) }}" target="_blank">Print</a>
+          <a class="btn" href="{{ url_for('app.invoice_pdf', inv_id=i['id']) }}">PDF</a>
+          {% if i['status'] != 'paid' %}
+            <form action="{{ url_for('app.pay_invoice', inv_id=i['id']) }}" method="post" style="display:inline;">
+              <button class="btn" type="submit">Mark Paid</button>
+            </form>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

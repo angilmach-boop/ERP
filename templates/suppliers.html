@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Suppliers{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;">
+  <h2>Suppliers</h2>
+  <button id="openAddSupplier" class="btn primary">Add Supplier</button>
+</div>
+<table class="table">
+  <thead><tr><th>Name</th><th>Contact</th><th>Email</th><th>Phone</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for s in suppliers %}
+      <tr>
+        <td>{{ s['name'] }}</td>
+        <td>{{ s['contact_name'] }}</td>
+        <td>{{ s['email'] }}</td>
+        <td>{{ s['phone'] }}</td>
+        <td>
+          <form action="{{ url_for('app.delete_supplier', supplier_id=s['id']) }}" method="post" style="display:inline;">
+            <button class="btn" type="submit" onclick="return confirm('Delete supplier?')">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Add Supplier Modal -->
+<div id="addSupplierModal" class="modal" aria-hidden="true">
+  <div class="modal-content">
+    <button class="modal-close" id="closeAddSupplier">&times;</button>
+    <h3>Add Supplier</h3>
+    <form action="{{ url_for('app.add_supplier') }}" method="post" class="modal-form">
+      <div class="form-row"><label>Name</label><input name="name" required /></div>
+      <div class="form-row"><label>Contact</label><input name="contact_name" /></div>
+      <div class="form-row"><label>Email</label><input name="email" /></div>
+      <div class="form-row"><label>Phone</label><input name="phone" /></div>
+      <div class="modal-actions"><button type="button" class="btn" id="cancelAddSupplier">Cancel</button><button type="submit" class="btn primary">Add</button></div>
+    </form>
+  </div>
+</div>
+{% endblock %}

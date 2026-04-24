@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}PO {{ po['id'] }}{% endblock %}
+{% block content %}
+<h2>Purchase Order #{{ po['id'] }}</h2>
+<p>Supplier: {{ po['supplier_name'] }}</p>
+<p>Status: {{ po['status'] }}</p>
+<table class="table">
+  <thead><tr><th>Item</th><th>Qty</th><th>Unit Cost</th></tr></thead>
+  <tbody>
+    {% for it in items %}
+      <tr>
+        <td>{{ it['name'] }}</td>
+        <td>{{ it['quantity'] }}</td>
+        <td>{{ '%.2f'|format(it['unit_cost']) }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% if po['status'] != 'received' %}
+  <form action="{{ url_for('app.purchase_orders') }}" method="get" style="display:inline;"></form>
+  <form action="{{ url_for('app.approve_purchase_order', po_id=po['id']) }}" method="post" style="display:inline;">
+    <button class="btn" type="submit">Approve</button>
+  </form>
+  <form action="{{ url_for('app.receive_purchase_order', po_id=po['id']) }}" method="post" style="display:inline;">
+    <button class="btn" type="submit">Receive</button>
+  </form>
+{% endif %}
+{% endblock %}

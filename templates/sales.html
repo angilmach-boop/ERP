@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Sales{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;">
+  <h2>Sales</h2>
+  <button id="openCreateSale" class="btn primary">Create Sale</button>
+</div>
+<table class="table">
+  <thead><tr><th>ID</th><th>Customer</th><th>Status</th><th>Created</th></tr></thead>
+  <tbody>
+    {% for s in sales %}
+      <tr>
+        <td>{{ s['id'] }}</td>
+        <td>{{ s['customer_name'] }}</td>
+        <td>{{ s['status'] }}</td>
+        <td>{{ s['created_at'] }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Create Sale Modal -->
+<div id="createSaleModal" class="modal" aria-hidden="true">
+  <div class="modal-content">
+    <button class="modal-close" id="closeCreateSale">&times;</button>
+    <h3>Create Sale</h3>
+    <form id="createSaleForm" action="{{ url_for('app.create_sale') }}" method="post" class="modal-form">
+      <div class="form-row"><label>Customer</label><input name="customer_name" /></div>
+      <div id="saleItems">
+        <div class="form-row" style="display:flex;gap:8px;align-items:center;">
+          <select name="item_id[]">
+            <option value="">-- select item --</option>
+            {% for it in items %}
+              <option value="{{ it['id'] }}">{{ it['name'] }}</option>
+            {% endfor %}
+          </select>
+          <input name="quantity[]" type="number" placeholder="Qty" />
+          <input name="unit_price[]" type="number" step="0.01" placeholder="Unit Price" />
+          <button type="button" class="btn removeRow">Remove</button>
+        </div>
+      </div>
+      <div style="margin-top:8px;"><button type="button" id="addSaleRow" class="btn">Add row</button></div>
+      <div class="modal-actions"><button type="button" class="btn" id="cancelCreateSale">Cancel</button><button type="submit" class="btn primary">Create Sale</button></div>
+    </form>
+  </div>
+</div>
+{% endblock %}

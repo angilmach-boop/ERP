@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Purchase Orders{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;">
+  <h2>Purchase Orders</h2>
+  <button id="openCreatePO" class="btn primary">Create PO</button>
+</div>
+<table class="table">
+  <thead><tr><th>ID</th><th>Supplier</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for p in orders %}
+      <tr>
+        <td>{{ p['id'] }}</td>
+        <td>{{ p['supplier_name'] }}</td>
+        <td>{{ p['status'] }}</td>
+        <td>{{ p['created_at'] }}</td>
+        <td>
+          <a class="btn" href="{{ url_for('app.view_purchase_order', po_id=p['id']) }}">View</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Create PO Modal -->
+<div id="createPOModal" class="modal" aria-hidden="true">
+  <div class="modal-content">
+    <button class="modal-close" id="closeCreatePO">&times;</button>
+    <h3>Create Purchase Order</h3>
+    <form id="createPOForm" action="{{ url_for('app.create_purchase_order') }}" method="post" class="modal-form">
+      <div class="form-row"><label>Supplier</label>
+        <select name="supplier_id">
+          {% for s in suppliers %}
+            <option value="{{ s['id'] }}">{{ s['name'] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div id="poItems">
+        <div class="form-row" style="display:flex;gap:8px;align-items:center;">
+          <select name="item_id[]">
+            <option value="">-- select item --</option>
+            {% for it in items %}
+              <option value="{{ it['id'] }}">{{ it['name'] }}</option>
+            {% endfor %}
+          </select>
+          <input name="quantity[]" type="number" placeholder="Qty" />
+          <input name="unit_cost[]" type="number" step="0.01" placeholder="Unit Cost" />
+          <button type="button" class="btn removeRow">Remove</button>
+        </div>
+      </div>
+      <div style="margin-top:8px;"><button type="button" id="addPORow" class="btn">Add row</button></div>
+      <div class="modal-actions"><button type="button" class="btn" id="cancelCreatePO">Cancel</button><button type="submit" class="btn primary">Create</button></div>
+    </form>
+  </div>
+</div>
+{% endblock %}

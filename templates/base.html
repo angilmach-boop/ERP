@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}ERP Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <div class="sidebar" id="appSidebar" role="navigation" aria-label="Main menu">
+      <div class="sidebar-top">
+        <div class="brand">
+          <a href="/">{{ company.name }}</a>
+          <button id="collapseSidebarBtn" class="collapse-btn" title="Collapse sidebar" aria-pressed="false"><i class="fa-solid fa-angle-left"></i></button>
+        </div>
+        <div class="brand-sub muted">{{ company.address }}</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-link" href="/"><i class="fa-solid fa-chart-line nav-icon"></i><span class="nav-label">Dashboard</span></a>
+        <a class="nav-link" href="/inventory"><i class="fa-solid fa-boxes nav-icon"></i><span class="nav-label">Inventory</span></a>
+        <a class="nav-link" href="/suppliers"><i class="fa-solid fa-truck nav-icon"></i><span class="nav-label">Suppliers</span></a>
+        <a class="nav-link" href="/purchase_orders"><i class="fa-solid fa-file-invoice nav-icon"></i><span class="nav-label">Purchase Orders</span></a>
+        <a class="nav-link" href="/sales"><i class="fa-solid fa-shopping-cart nav-icon"></i><span class="nav-label">Sales</span></a>
+        <a class="nav-link" href="/invoices"><i class="fa-solid fa-file-invoice-dollar nav-icon"></i><span class="nav-label">Invoices</span></a>
+        <a class="nav-link" href="/ledger"><i class="fa-solid fa-book nav-icon"></i><span class="nav-label">Ledger</span></a>
+      </nav>
+        <div class="sidebar-footer">
+          {% set user = session.get('user') %}
+          <div class="user-block">
+            <div class="avatar">{{ (user.get('username')[0]|upper) if user and user.get('username') else 'U' }}</div>
+            <div class="user-info">
+              <div class="name">{{ user.get('username') if user and user.get('username') else 'Guest' }}</div>
+              <div class="role muted">{{ user.get('role') if user and user.get('role') else '' }}</div>
+            </div>
+          </div>
+          <form action="{{ url_for('app.logout') }}" method="get" class="logout-form">
+            <button type="submit" class="logout-btn" title="Sign out"><i class="fa-solid fa-arrow-right-from-bracket"></i><span class="logout-label">Logout</span></button>
+          </form>
+        </div>
+      </div>
+    <main class="content">
+      <button id="mobileMenuBtn" class="mobile-menu-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+     {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="flash {{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    </main>
+  </div>
+  <footer class="footer">
+    <small>&copy; Company - ERP module</small>
+  </footer>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+</body>
+</html>
