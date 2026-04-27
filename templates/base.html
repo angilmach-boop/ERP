@@ -11,6 +11,7 @@
 </head>
 <body>
   <div class="layout">
+    {% if session.get('user') %}
     <div class="sidebar" id="appSidebar" role="navigation" aria-label="Main menu">
       <div class="sidebar-top">
         <div class="brand">
@@ -44,8 +45,11 @@
           </form>
         </div>
       </div>
+    {% endif %}
     <main class="content">
+      {% if session.get('user') %}
       <button id="mobileMenuBtn" class="mobile-menu-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+      {% endif %}
      {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <ul class="flashes">
